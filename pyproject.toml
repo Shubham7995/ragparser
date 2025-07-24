@@ -108,21 +108,21 @@ include = ["ragparser*"]
 
 [tool.black]
 line-length = 88
-target-version = ['py38']
-include = '\.pyi?
-extend-exclude = '''
+target-version = ["py38"]
+include = "\\.pyi?$"
+extend-exclude = """
 /(
   # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
+  \\.eggs
+  | \\.git
+  | \\.hg
+  | \\.mypy_cache
+  | \\.tox
+  | \\.venv
   | build
   | dist
 )/
-'''
+"""
 
 [tool.mypy]
 python_version = "3.8"
@@ -159,6 +159,6 @@ exclude_lines = [
     "raise NotImplementedError",
     "if 0:",
     "if __name__ == .__main__.:",
-    "class .*\bProtocol\):",
-    "@(abc\.)?abstractmethod",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
 ]
