@@ -1,0 +1,164 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ragparser"
+dynamic = ["version"]
+description = "A comprehensive document parser for RAG applications with support for PDF, DOCX, PPTX, XLSX, and more"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Shubham Shinde", email = "shubhamshinde7995@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Framework :: AsyncIO",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "aiofiles>=0.8.0",
+]
+
+[project.optional-dependencies]
+pdf = [
+    "PyMuPDF>=1.23.0",
+    "pdfplumber>=0.9.0",
+]
+office = [
+    "python-docx>=0.8.11",
+    "python-pptx>=0.6.21",
+    "openpyxl>=3.1.0",
+]
+html = [
+    "beautifulsoup4>=4.11.0",
+    "lxml>=4.9.0",
+]
+ocr = [
+    "pytesseract>=0.3.10",
+    "Pillow>=9.0.0",
+]
+advanced = [
+    "sentence-transformers>=2.2.0",
+    "nltk>=3.8",
+    "spacy>=3.5.0",
+]
+all = [
+    "PyMuPDF>=1.23.0",
+    "pdfplumber>=0.9.0",
+    "python-docx>=0.8.11",
+    "python-pptx>=0.6.21",
+    "openpyxl>=3.1.0",
+    "beautifulsoup4>=4.11.0",
+    "lxml>=4.9.0",
+    "pytesseract>=0.3.10",
+    "Pillow>=9.0.0",
+    "sentence-transformers>=2.2.0",
+    "nltk>=3.8",
+    "spacy>=3.5.0",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0",
+    "mypy>=1.0",
+    "flake8>=6.0",
+    "pre-commit>=3.0.0",
+    "twine>=4.0.0",
+]
+test = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+]
+langchain = [
+    "langchain>=0.1.0",
+    "langchain-community>=0.0.10",
+]
+llamaindex = [
+    "llama-index>=0.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/shubham7995/ragparser"
+Documentation = "https://github.com/shubham7995/ragparser#readme"
+Repository = "https://github.com/shubham7995/ragparser"
+"Bug Tracker" = "https://github.com/shubham7995/ragparser/issues"
+
+[tool.setuptools.dynamic]
+version = {attr = "ragparser.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ragparser*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+]
+
+[tool.coverage.run]
+source = ["ragparser"]
+omit = [
+    "tests/*",
+    "examples/*",
+    "setup.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\bProtocol\):",
+    "@(abc\.)?abstractmethod",
+]
