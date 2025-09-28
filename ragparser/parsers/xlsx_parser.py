@@ -4,7 +4,7 @@ XLSX parser implementation using openpyxl
 
 import asyncio
 import logging
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, TYPE_CHECKING
 from pathlib import Path
 import io
 
@@ -15,6 +15,11 @@ try:
     HAS_OPENPYXL = True
 except ImportError:
     HAS_OPENPYXL = False
+    # Create dummy class for type hints
+    if TYPE_CHECKING:
+        from openpyxl.workbook import Workbook
+    else:
+        Workbook = object
 
 from .base import BaseParser
 from ..core.models import ParsedDocument, ParserConfig, FileType, ContentBlock
@@ -87,8 +92,9 @@ class XLSXParser(BaseParser):
             raise ProcessingError(f"Failed to parse XLSX from bytes: {str(e)}", e)
 
     def _extract_content(
-        self, wb: Workbook, document: ParsedDocument, config: ParserConfig
+        self, wb, document: ParsedDocument, config: ParserConfig
     ) -> ParsedDocument:
+        """Extract content from XLSX workbook"""
         """Extract content from XLSX workbook"""
         content_parts = []
         content_blocks = []

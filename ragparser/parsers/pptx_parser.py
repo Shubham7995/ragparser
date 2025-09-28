@@ -4,7 +4,7 @@ PPTX parser implementation using python-pptx
 
 import asyncio
 import logging
-from typing import List, Dict, Any
+from typing import List, Dict, Any, TYPE_CHECKING
 from pathlib import Path
 import io
 
@@ -14,6 +14,11 @@ try:
     HAS_PPTX = True
 except ImportError:
     HAS_PPTX = False
+    # Create dummy class for type hints
+    if TYPE_CHECKING:
+        from pptx import Presentation
+    else:
+        Presentation = object
 
 from .base import BaseParser
 from ..core.models import ParsedDocument, ParserConfig, FileType, ContentBlock
@@ -86,8 +91,9 @@ class PPTXParser(BaseParser):
             raise ProcessingError(f"Failed to parse PPTX from bytes: {str(e)}", e)
 
     def _extract_content(
-        self, prs: Presentation, document: ParsedDocument, config: ParserConfig
+        self, prs, document: ParsedDocument, config: ParserConfig
     ) -> ParsedDocument:
+        """Extract content from PPTX presentation"""
         """Extract content from PPTX presentation"""
         content_parts = []
         content_blocks = []

@@ -4,7 +4,7 @@ DOCX parser implementation using python-docx
 
 import asyncio
 import logging
-from typing import List, Dict, Any
+from typing import List, Dict, Any, TYPE_CHECKING
 from pathlib import Path
 import io
 
@@ -15,6 +15,11 @@ try:
     HAS_DOCX = True
 except ImportError:
     HAS_DOCX = False
+    # Create dummy class for type hints
+    if TYPE_CHECKING:
+        from docx import Document
+    else:
+        Document = object
 
 from .base import BaseParser
 from ..core.models import ParsedDocument, ParserConfig, FileType, ContentBlock
@@ -87,8 +92,9 @@ class DOCXParser(BaseParser):
             raise ProcessingError(f"Failed to parse DOCX from bytes: {str(e)}", e)
 
     def _extract_content(
-        self, doc: Document, document: ParsedDocument, config: ParserConfig
+        self, doc, document: ParsedDocument, config: ParserConfig
     ) -> ParsedDocument:
+        """Extract content from DOCX document"""
         """Extract content from DOCX document"""
         content_parts = []
         content_blocks = []

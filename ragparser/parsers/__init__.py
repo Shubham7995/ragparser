@@ -9,6 +9,17 @@ from .base import BaseParser
 # Import parsers with optional dependencies
 _PARSERS: Dict[FileType, Type[BaseParser]] = {}
 
+# Always available parsers first
+from .text_parser import TextParser
+from .html_parser import HTMLParser
+
+_PARSERS[FileType.TXT] = TextParser
+_PARSERS[FileType.MD] = TextParser
+_PARSERS[FileType.HTML] = HTMLParser
+_PARSERS[FileType.CSV] = TextParser
+_PARSERS[FileType.JSON] = TextParser
+
+# Optional parsers - only import if dependencies are available
 try:
     from .pdf_parser import PDFParser
 
@@ -36,16 +47,6 @@ try:
     _PARSERS[FileType.XLSX] = XLSXParser
 except ImportError:
     pass
-
-# Always available parsers
-from .text_parser import TextParser
-from .html_parser import HTMLParser
-
-_PARSERS[FileType.TXT] = TextParser
-_PARSERS[FileType.MD] = TextParser
-_PARSERS[FileType.HTML] = HTMLParser
-_PARSERS[FileType.CSV] = TextParser
-_PARSERS[FileType.JSON] = TextParser
 
 try:
     from .image_parser import ImageParser
